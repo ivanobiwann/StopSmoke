@@ -48,7 +48,8 @@
 
         // Получаем данные пользователя
         const user = tg.initDataUnsafe.user || { first_name: "Пользователь" };
-        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! Ты сделал первый шаг! 
+        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
+        Ты сделал первый шаг! 
         Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
 
         const counterElement = document.getElementById('checkin-count');
