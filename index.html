@@ -1,4 +1,129 @@
-checkinData[userId] = { count: 0, lastCheckin: null };
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quit Smoking App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Центрирование по горизонтали */
+            height: 100vh; /* Центрирование по всей высоте */
+            margin: 0;
+        }
+        h1 {
+            color: #1E90FF;
+        }
+        button {
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            padding: 15px 30px; /* Увеличил размер кнопки */
+            font-size: 20px; /* Увеличил шрифт кнопки */
+            cursor: pointer;
+            border-radius: 10px; /* Более округлые углы */
+            margin-bottom: 20px; /* Отступ от кнопки до счетчика */
+        }
+        button:hover {
+            background-color: #1C86EE;
+        }
+        /* Счетчик чек-инов */
+        .counter {
+            width: 100px; /* Увеличенный размер */
+            height: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            background-color: #1E90FF;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            margin-top: 30px; /* Отступ сверху */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        /* Стили для вкладок */
+        .tab-content {
+            display: none;
+            width: 100%;
+            text-align: center;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .tabs button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .tabs button:hover {
+            background-color: #1C86EE;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="greeting">Загрузка...</h1>
+    <button id="checkin">Сделать чек-ин</button>
+    <div id="checkin-count" class="counter">0</div>
+
+    <!-- Вкладки -->
+    <div class="tabs">
+        <button id="profileTab">Профиль</button>
+        <button id="awardsTab">Награды</button>
+        <button id="rankingTab">Рейтинг</button>
+    </div>
+
+    <!-- Контент вкладок -->
+    <div id="profileContent" class="tab-content active">
+        <h2>Профиль</h2>
+        <p>Здесь будет информация о вашем профиле.</p>
+    </div>
+    <div id="awardsContent" class="tab-content">
+        <h2>Награды</h2>
+        <p>Здесь будут отображаться ваши награды.</p>
+    </div>
+    <div id="rankingContent" class="tab-content">
+        <h2>Рейтинг</h2>
+        <p>Здесь будет информация о вашем рейтинге.</p>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // Получаем данные пользователя
+        const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
+        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
+        Ты сделал первый шаг! 
+        Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
+
+        // Счетчик чек-инов и его элемент
+        const counterElement = document.getElementById('checkin-count');
+
+        // Локальное хранилище для чек-инов
+        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
+        const userId = user.id || "default_user"; // Уникальный ID пользователя
+        const today = new Date().toISOString().split('T')[0]; // Текущая дата в формате YYYY-MM-DD
+
+        // Инициализация счетчика
+        if (!checkinData[userId]) {
+            checkinData[userId] = { count: 0, lastCheckin: null };
         }
         const userCheckin = checkinData[userId];
 
