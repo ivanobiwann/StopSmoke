@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -26,20 +26,27 @@
         button:hover {
             background-color: #1C86EE;
         }
+        /* Стиль для счетчика чек-инов в виде круга */
         .counter {
-            font-size: 24px;
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 50%;
+            background-color: #1E90FF;
+            color: white;
+            font-size: 20px;
             font-weight: bold;
-            color: #1E90FF;
             margin-top: 20px;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
     <h1 id="greeting">Загрузка...</h1>
     <button id="checkin">Сделать чек-ин</button>
-    <p id="checkin-count" class="counter">0</p>
+    <div id="checkin-count" class="counter">0</div>
 
     <script>
         // Инициализация Telegram Web App
@@ -47,51 +54,53 @@
         tg.expand();
 
         // Получаем данные пользователя
-        const user = tg.initDataUnsafe.user || { first_name: "Пользователь" };
+        const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
         document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
         Ты сделал первый шаг! 
         Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
 
+        // Счетчик чек-инов и его элемент
         const counterElement = document.getElementById('checkin-count');
 
         // Локальное хранилище для чек-инов
-        let checkinCount = localStorage.getItem('checkinCount') || 0;
-        let lastCheckinDate = localStorage.getItem('lastCheckinDate') || null;
+        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
+        const userId = user.id || "default_user"; // Уникальный ID пользователя
+        const today = new Date().toISOString().split('T')[0]; // Текущая дата в формате YYYY-MM-DD
 
-        // Обновляем отображение счетчика
-        counterElement.innerText = checkinCount;
+        // Инициализация счетчика
+        if (!checkinData[userId]) {
+            checkinData[userId] = { count: 0, lastCheckin: null };
+        }
+        const userCheckin = checkinData[userId];
 
-        // Получаем текущую дату в формате YYYY-MM-DD
-        function getCurrentDate() {
-            const now = new Date();
-            return now.toISOString().split('T')[0];
+        // Обновление отображения счетчика
+        function updateCounter() {
+            counterElement.style.opacity = 0; // Плавное исчезновение
+            setTimeout(() => {
+                counterElement.innerText = userCheckin.count;
+                counterElement.style.opacity = 1; // Плавное появление
+                counterElement.style.transform = "scale(1.1)";
+                setTimeout(() => counterElement.style.transform = "scale(1)", 200);
+            }, 200);
         }
 
-        // Проверяем возможность чек-ина
-        function canCheckinToday() {
-            const today = getCurrentDate();
-            return today !== lastCheckinDate;
-        }
+        updateCounter(); // Изначальное обновление
 
-        // Обработчик чек-ина
+        // Проверка, можно ли сделать чек-ин
         document.getElementById('checkin').onclick = () => {
-            const today = getCurrentDate();
-            if (canCheckinToday()) {
-                checkinCount++;
-                localStorage.setItem('checkinCount', checkinCount);
-                localStorage.setItem('lastCheckinDate', today);
+            if (userCheckin.lastCheckin !== today) {
+                userCheckin.count++;
+                userCheckin.lastCheckin = today;
 
-                // Плавная анимация счетчика
-                counterElement.style.opacity = 0;
-                setTimeout(() => {
-                    counterElement.innerText = checkinCount;
-                    counterElement.style.opacity = 1;
-                }, 200);
+                // Сохранение прогресса в localStorage
+                checkinData[userId] = userCheckin;
+                localStorage.setItem('checkinData', JSON.stringify(checkinData));
 
+                // Обновление счетчика
+                updateCounter();
                 alert("Чек-ин выполнен! Продолжай в том же духе.");
             } else {
                 alert("Вы уже сделали чек-ин сегодня. Возвращайтесь завтра!");
-                console.log(`Последний чек-ин: ${lastCheckinDate}, Сегодня: ${today}`);
             }
         };
     </script>
