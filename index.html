@@ -13,6 +13,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center; /* Центрирование по горизонтали */
             height: 100vh; /* Центрирование по всей высоте */
             margin: 0;
         }
@@ -27,17 +28,13 @@
             font-size: 20px; /* Увеличил шрифт кнопки */
             cursor: pointer;
             border-radius: 10px; /* Более округлые углы */
-            margin: 20px auto; /* Центрирование и отступ */
+            margin-bottom: 20px; /* Отступ от кнопки до счетчика */
         }
         button:hover {
             background-color: #1C86EE;
         }
-        /* Счетчик чек-инов снизу */
+        /* Счетчик чек-инов */
         .counter {
-            position: absolute;
-            bottom: 30px; /* Позиция снизу */
-            left: 50%;
-            transform: translateX(-50%); /* Центрирование по горизонтали */
             width: 100px; /* Увеличенный размер */
             height: 100px;
             line-height: 100px;
@@ -46,6 +43,7 @@
             color: white;
             font-size: 40px;
             font-weight: bold;
+            margin-top: 30px; /* Отступ сверху */
             opacity: 0;
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
@@ -106,11 +104,4 @@
 
                 // Обновление счетчика
                 updateCounter();
-                alert("Чек-ин выполнен! Продолжай в том же духе.");
-            } else {
-                alert("Вы уже сделали чек-ин сегодня. Возвращайтесь завтра!");
-            }
-        };
-    </script>
-</body>
-</html>
+                alert("Чек-ин выполнен! Продолжай в
