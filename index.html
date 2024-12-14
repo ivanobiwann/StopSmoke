@@ -12,9 +12,9 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center; /* Центрирование по горизонтали */
-            height: 100vh; /* Центрирование по всей высоте */
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
             margin: 0;
         }
         h1 {
@@ -24,18 +24,17 @@
             background-color: #1E90FF;
             color: white;
             border: none;
-            padding: 15px 30px; /* Увеличил размер кнопки */
-            font-size: 20px; /* Увеличил шрифт кнопки */
+            padding: 15px 30px;
+            font-size: 20px;
             cursor: pointer;
-            border-radius: 10px; /* Более округлые углы */
-            margin-bottom: 20px; /* Отступ от кнопки до счетчика */
+            border-radius: 10px;
+            margin: 10px;
         }
         button:hover {
             background-color: #1C86EE;
         }
-        /* Счетчик чек-инов */
         .counter {
-            width: 100px; /* Увеличенный размер */
+            width: 100px;
             height: 100px;
             line-height: 100px;
             border-radius: 50%;
@@ -43,9 +42,23 @@
             color: white;
             font-size: 40px;
             font-weight: bold;
-            margin-top: 30px; /* Отступ сверху */
+            margin-top: 30px;
             opacity: 0;
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .tab-content {
+            display: none;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -54,61 +67,100 @@
     <button id="checkin">Сделать чек-ин</button>
     <div id="checkin-count" class="counter">0</div>
 
+    <!-- Вкладки -->
+    <div class="tabs">
+        <button id="profileTab">Профиль</button>
+        <button id="awardsTab">Награды</button>
+        <button id="rankingTab">Рейтинг</button>
+    </div>
+
+    <!-- Контент вкладок -->
+    <div id="profileContent" class="tab-content active">
+        <h2>Профиль</h2>
+        <p>Здесь будет информация о вашем профиле.</p>
+    </div>
+    <div id="awardsContent" class="tab-content">
+        <h2>Награды</h2>
+        <p>Здесь будут отображаться ваши награды.</p>
+    </div>
+    <div id="rankingContent" class="tab-content">
+        <h2>Рейтинг</h2>
+        <p>Здесь будет информация о вашем рейтинге.</p>
+    </div>
+
     <script>
         // Инициализация Telegram Web App
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Получаем данные пользователя
-        const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
-        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
-        Ты сделал первый шаг! 
-        Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
+        // Функция для инициализации данных пользователя
+        function initializeApp() {
+            // Получаем данные пользователя
+            const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
+            document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
+            Ты сделал первый шаг! 
+            Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
 
-        // Счетчик чек-инов и его элемент
-        const counterElement = document.getElementById('checkin-count');
+            // Счетчик чек-инов и его элемент
+            const counterElement = document.getElementById('checkin-count');
 
-        // Локальное хранилище для чек-инов
-        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
-        const userId = user.id || "default_user"; // Уникальный ID пользователя
-        const today = new Date().toISOString().split('T')[0]; // Текущая дата в формате YYYY-MM-DD
+            // Локальное хранилище для чек-инов
+            let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
+            const userId = user.id || "default_user"; // Уникальный ID пользователя
+            const today = new Date().toISOString().split('T')[0]; // Текущая дата в формате YYYY-MM-DD
 
-        // Инициализация счетчика
-        if (!checkinData[userId]) {
-            checkinData[userId] = { count: 0, lastCheckin: null };
-        }
-        const userCheckin = checkinData[userId];
-
-        // Обновление отображения счетчика
-        function updateCounter() {
-            counterElement.style.opacity = 0; // Плавное исчезновение
-            setTimeout(() => {
-                counterElement.innerText = userCheckin.count;
-                counterElement.style.opacity = 1; // Плавное появление
-                counterElement.style.transform = "scale(1.1)";
-                setTimeout(() => counterElement.style.transform = "scale(1)", 200);
-            }, 200);
-        }
-
-        updateCounter(); // Изначальное обновление
-
-        // Проверка, можно ли сделать чек-ин
-        document.getElementById('checkin').onclick = () => {
-            if (userCheckin.lastCheckin !== today) {
-                userCheckin.count++;
-                userCheckin.lastCheckin = today;
-
-                // Сохранение прогресса в localStorage
-                checkinData[userId] = userCheckin;
-                localStorage.setItem('checkinData', JSON.stringify(checkinData));
-
-                // Обновление счетчика
-                updateCounter();
-                alert("Чек-ин выполнен! Продолжай в том же духе.");
-            } else {
-                alert("Вы уже сделали чек-ин сегодня. Возвращайтесь завтра!");
+            // Инициализация счетчика
+            if (!checkinData[userId]) {
+                checkinData[userId] = { count: 0, lastCheckin: null };
             }
-        };
+            const userCheckin = checkinData[userId];
+
+            // Обновление отображения счетчика
+            function updateCounter() {
+                counterElement.style.opacity = 0; // Плавное исчезновение
+                setTimeout(() => {
+                    counterElement.innerText = userCheckin.count;
+                    counterElement.style.opacity = 1; // Плавное появление
+                    counterElement.style.transform = "scale(1.1)";
+                    setTimeout(() => counterElement.style.transform = "scale(1)", 200);
+                }, 200);
+            }
+
+            updateCounter(); // Изначальное обновление
+
+            // Проверка, можно ли сделать чек-ин
+            document.getElementById('checkin').onclick = () => {
+                if (userCheckin.lastCheckin !== today) {
+                    userCheckin.count++;
+                    userCheckin.lastCheckin = today;
+
+                    // Сохранение прогресса в localStorage
+                    checkinData[userId] = userCheckin;
+                    localStorage.setItem('checkinData', JSON.stringify(checkinData));
+
+                    // Обновление счетчика
+                    updateCounter();
+                    alert("Чек-ин выполнен! Продолжай в том же духе.");
+                } else {
+                    alert("Вы уже сделали чек-ин сегодня. Возвращайтесь завтра!");
+                }
+            };
+        }
+
+        // Проверяем, когда приложение готово
+        tg.ready().then(initializeApp); // Загрузка и инициализация приложения после полной загрузки
+
+        // Логика для переключения вкладок
+        document.getElementById('profileTab').onclick = () => showTab('profile');
+        document.getElementById('awardsTab').onclick = () => showTab('awards');
+        document.getElementById('rankingTab').onclick = () => showTab('ranking');
+
+        // Функция для отображения выбранной вкладки
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active')); // Скрыть все вкладки
+            document.getElementById(`${tabName}Content`).classList.add('active'); // Показать выбранную вкладку
+        }
     </script>
 </body>
 </html>
