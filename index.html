@@ -41,7 +41,9 @@
         const user = tg.initDataUnsafe.user;
 
         // Вставляем приветствие перед именем пользователя
-        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! Ты сделал первый шаг! Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
+        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
+        Ты сделал первый шаг! 
+        Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
 
         // Чек-ин кнопка
         document.getElementById('checkin').onclick = () => {
