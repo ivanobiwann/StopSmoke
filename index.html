@@ -92,9 +92,10 @@
             margin-bottom: 5px;
         }
         .menu-icon img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
+            width: 40px; /* Устанавливаем ширину изображения */
+            height: 40px; /* Устанавливаем высоту изображения */
+            border-radius: 50%; /* Делаем изображение круглым */
+            object-fit: cover; /* Масштабируем изображение, сохраняя пропорции */
         }
         .menu-item:hover .menu-icon {
             background-color: #1C86EE;
@@ -175,7 +176,6 @@
         const profilePhoto = document.getElementById('profile-photo');
         if (user.photo_url) {
             profilePhoto.src = user.photo_url;
-            profilePhoto.style.filter = "none";  // Убираем фильтр, чтобы изображение было нормальным
         }
 
         const counterElement = document.getElementById('checkin-count');
