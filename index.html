@@ -13,10 +13,11 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center; /* Центрирование по горизонтали */
-            height: 100vh; /* Центрирование по всей высоте */
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            background-color: #1E1E1E; /* Возвращен прежний темный фон */
+            background-color: #1E1E1E;
+            color: white;
         }
         h1 {
             color: #1E90FF;
@@ -34,7 +35,6 @@
         button:hover {
             background-color: #1C86EE;
         }
-        /* Счетчик чек-инов */
         .counter {
             width: 100px;
             height: 100px;
@@ -48,32 +48,55 @@
             opacity: 0;
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
-        /* Стили для вкладок */
+        .counter.active {
+            opacity: 1;
+            transform: scale(1);
+        }
         .tab-content {
             display: none;
             width: 100%;
             text-align: center;
-            color: white; /* Белый цвет текста */
+            color: white;
         }
         .tab-content.active {
             display: block;
         }
-        .tabs {
+        /* Нижнее меню */
+        .bottom-menu {
             display: flex;
             justify-content: space-around;
+            align-items: center;
+            background-color: #2E2E2E;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
             width: 100%;
-            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
         }
-        .tabs button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #1E90FF;
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
             color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
+            font-size: 12px;
         }
-        .tabs button:hover {
+        .menu-icon {
+            background-color: #1E90FF;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .menu-icon img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+        .menu-item:hover .menu-icon {
             background-color: #1C86EE;
         }
     </style>
@@ -83,93 +106,106 @@
     <button id="checkin">Сделать чек-ин</button>
     <div id="checkin-count" class="counter">0</div>
 
-    <!-- Вкладки -->
-    <div class="tabs">
-        <button id="profileTab">Профиль</button>
-        <button id="awardsTab">Награды</button>
-        <button id="rankingTab">Рейтинг</button>
-    </div>
-
     <!-- Контент вкладок -->
-    <div id="profileContent" class="tab-content active">
-        <h2>Профиль</h2>
-        <p>Здесь будет информация о вашем профиле.</p>
-    </div>
-    <div id="awardsContent" class="tab-content">
-        <h2>Награды</h2>
-        <p>Здесь будут отображаться ваши награды.</p>
+    <div id="homeContent" class="tab-content active">
+        <h2>Главная</h2>
+        <p>Добро пожаловать! Следите за своим прогрессом каждый день.</p>
     </div>
     <div id="rankingContent" class="tab-content">
         <h2>Рейтинг</h2>
         <p>Здесь будет информация о вашем рейтинге.</p>
     </div>
+    <div id="rewardsContent" class="tab-content">
+        <h2>Награды</h2>
+        <p>Здесь будут отображаться ваши награды.</p>
+    </div>
+    <div id="friendsContent" class="tab-content">
+        <h2>Друзья</h2>
+        <p>Здесь можно увидеть ваших друзей.</p>
+    </div>
+    <div id="profileContent" class="tab-content">
+        <h2>Профиль</h2>
+        <p>Здесь будет информация о вашем профиле.</p>
+    </div>
+
+    <!-- Нижнее меню -->
+    <nav class="bottom-menu">
+        <div class="menu-item" onclick="showTab('home')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/home.png" alt="Главная">
+            </div>
+            Главная
+        </div>
+        <div class="menu-item" onclick="showTab('ranking')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/trophy.png" alt="Рейтинг">
+            </div>
+            Рейтинг
+        </div>
+        <div class="menu-item" onclick="showTab('rewards')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/medal.png" alt="Награды">
+            </div>
+            Награды
+        </div>
+        <div class="menu-item" onclick="showTab('friends')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
+            </div>
+            Друзья
+        </div>
+        <div class="menu-item" onclick="showTab('profile')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
+            </div>
+            Профиль
+        </div>
+    </nav>
 
     <script>
-        // Инициализация Telegram Web App
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Получаем данные пользователя
         const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
         document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
-        Ты сделал первый шаг! 
-        Каждый день без сигарет — это шаг к лучшему здоровью и новой жизни.`;
+        Каждый день без сигарет — это шаг к лучшему здоровью.`;
 
-        // Счетчик чек-инов и его элемент
         const counterElement = document.getElementById('checkin-count');
-
-        // Локальное хранилище для чек-инов
         let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
-        const userId = user.id || "default_user"; // Уникальный ID пользователя
-        const today = new Date().toISOString().split('T')[0]; // Текущая дата в формате YYYY-MM-DD
+        const userId = user.id || "default_user";
+        const today = new Date().toISOString().split('T')[0];
 
-        // Инициализация счетчика
         if (!checkinData[userId]) {
             checkinData[userId] = { count: 0, lastCheckin: null };
         }
         const userCheckin = checkinData[userId];
 
-        // Обновление отображения счетчика
         function updateCounter() {
-            counterElement.style.opacity = 0; // Плавное исчезновение
+            counterElement.classList.remove('active');
             setTimeout(() => {
                 counterElement.innerText = userCheckin.count;
-                counterElement.style.opacity = 1; // Плавное появление
-                counterElement.style.transform = "scale(1.1)";
-                setTimeout(() => counterElement.style.transform = "scale(1)", 200);
+                counterElement.classList.add('active');
             }, 200);
         }
+        updateCounter();
 
-        updateCounter(); // Изначальное обновление
-
-        // Проверка, можно ли сделать чек-ин
         document.getElementById('checkin').onclick = () => {
             if (userCheckin.lastCheckin !== today) {
                 userCheckin.count++;
                 userCheckin.lastCheckin = today;
-
-                // Сохранение прогресса в localStorage
                 checkinData[userId] = userCheckin;
                 localStorage.setItem('checkinData', JSON.stringify(checkinData));
-
-                // Обновление счетчика
                 updateCounter();
-                alert("Чек-ин выполнен! Продолжай в том же духе.");
+                alert("Чек-ин выполнен!");
             } else {
-                alert("Вы уже сделали чек-ин сегодня. Возвращайтесь завтра!");
+                alert("Вы уже сделали чек-ин сегодня.");
             }
         };
 
-        // Логика для переключения вкладок
-        document.getElementById('profileTab').onclick = () => showTab('profile');
-        document.getElementById('awardsTab').onclick = () => showTab('awards');
-        document.getElementById('rankingTab').onclick = () => showTab('ranking');
-
-        // Функция для отображения выбранной вкладки
+        // Функция переключения вкладок
         function showTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active')); // Скрыть все вкладки
-            document.getElementById(`${tabName}Content`).classList.add('active'); // Показать выбранную вкладку
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`${tabName}Content`).classList.add('active');
         }
     </script>
 </body>
