@@ -61,6 +61,7 @@
         .tab-content.active {
             display: block;
         }
+        /* Нижнее меню */
         .bottom-menu {
             display: flex;
             justify-content: space-around;
@@ -83,29 +84,20 @@
         .menu-icon {
             background-color: #1E90FF;
             border-radius: 50%;
-            width: 50px;  /* Размер кружка */
+            width: 50px;
             height: 50px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 5px;
-            overflow: hidden;
         }
         .menu-icon img {
-            width: 100%;  /* Устанавливаем ширину 100% для всех иконок */
-            height: 100%; /* Устанавливаем высоту 100% для всех иконок */
-            object-fit: cover;  /* Все иконки будут заполнять круг */
+            width: 24px;
+            height: 24px;
             filter: brightness(0) invert(1);
         }
         .menu-item:hover .menu-icon {
             background-color: #1C86EE;
-        }
-
-        /* Стили для изображения профиля */
-        #profile-photo {
-            object-fit: cover;  /* Для изображения профиля */
-            width: 100%;  /* Заполняем всю кнопку */
-            height: 100%; /* Заполняем всю кнопку */
         }
     </style>
 </head>
@@ -158,12 +150,13 @@
         </div>
         <div class="menu-item" onclick="showTab('friends')">
             <div class="menu-icon">
-                <img src="https://img.icons8.com/ios-filled/50/three-users.png" alt="Друзья"> <!-- Замененная иконка -->
+                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
             </div>
             Друзья
         </div>
         <div class="menu-item" onclick="showTab('profile')">
             <div class="menu-icon">
+                <!-- Здесь будет отображаться фото профиля пользователя -->
                 <img id="profile-photo" src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
             </div>
             Профиль
@@ -174,15 +167,15 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        // Получаем информацию о пользователе из Telegram Web App
         const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
-        const greetingElement = document.getElementById('greeting');
-        greetingElement.innerText = `Привет, ${user.first_name}! Каждый день без сигарет — это шаг к лучшему здоровью.`;
+        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! Каждый день без сигарет — это шаг к лучшему здоровью.`;
 
-        // Обновление фото профиля
+        // Обновляем фото профиля, если оно есть
         const profilePhoto = document.getElementById('profile-photo');
         if (user.photo_url) {
             profilePhoto.src = user.photo_url;
-            profilePhoto.style.filter = "none";
+            profilePhoto.style.filter = "none";  // Убираем фильтр, чтобы изображение было нормальным
         }
 
         const counterElement = document.getElementById('checkin-count');
@@ -193,7 +186,6 @@
         if (!checkinData[userId]) {
             checkinData[userId] = { count: 0, lastCheckin: null };
         }
-
         const userCheckin = checkinData[userId];
 
         function updateCounter() {
@@ -218,6 +210,7 @@
             }
         };
 
+        // Функция переключения вкладок
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(`${tabName}Content`).classList.add('active');
