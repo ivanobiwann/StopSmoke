@@ -92,29 +92,12 @@
             margin-bottom: 5px;
         }
         .menu-icon img {
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             filter: brightness(0) invert(1);
         }
         .menu-item:hover .menu-icon {
             background-color: #1C86EE;
-        }
-
-        /* Специальный стиль для кнопки "Профиль" */
-        .menu-item.profile .menu-icon {
-            background-color: transparent; /* Прозрачный фон для кнопки "Профиль" */
-        }
-        .menu-item.profile .menu-icon img {
-            width: 45px;  /* Увеличиваем размер изображения для кнопки "Профиль" */
-            height: 45px; /* Увеличиваем размер изображения для кнопки "Профиль" */
-            border-radius: 50%; /* Круглая форма для изображения */
-            object-fit: cover; /* Обрезка изображения для соответствия круглой форме */
-        }
-
-        /* Иконка "Друзья" - правильная иконка с двумя человечками */
-        .menu-item.friends .menu-icon img {
-            width: 30px;
-            height: 30px;
         }
     </style>
 </head>
@@ -165,16 +148,15 @@
             </div>
             Награды
         </div>
-        <div class="menu-item friends" onclick="showTab('friends')">
+        <div class="menu-item" onclick="showTab('friends')">
             <div class="menu-icon">
-                <img src="https://img.icons8.com/ios-filled/50/user-group.png" alt="Друзья">
+                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
             </div>
             Друзья
         </div>
-        <!-- Кнопка "Профиль" с отдельным стилем -->
-        <div class="menu-item profile" onclick="showTab('profile')">
+        <div class="menu-item" onclick="showTab('profile')">
             <div class="menu-icon">
-                <img id="profile-pic" src="" alt="Профиль"> <!-- Пустой src, заменим через JS -->
+                <img src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
             </div>
             Профиль
         </div>
@@ -184,16 +166,9 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        const user = tg.initDataUnsafe?.user || { first_name: "Пользователь", photo_url: "" }; // Проверяем наличие photo_url
+        const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
         document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
         Каждый день без сигарет — это шаг к лучшему здоровью.`;
-
-        // Устанавливаем фото профиля
-        if (user.photo_url) {
-            document.getElementById('profile-pic').src = user.photo_url;  // Устанавливаем фото пользователя
-        } else {
-            console.log("Фото профиля не найдено"); // Если фото нет, выводим в консоль
-        }
 
         const counterElement = document.getElementById('checkin-count');
         let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
