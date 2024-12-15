@@ -48,11 +48,9 @@
             font-size: 40px;
             font-weight: bold;
             margin: 30px auto;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
 
-        /* Стили для нижнего меню */
+        /* Нижнее меню */
         .bottom-menu {
             display: flex;
             justify-content: space-around;
@@ -110,17 +108,25 @@
     <div id="checkin-count" class="counter">0</div>
 
     <!-- Контейнер вкладок -->
-    <div id="profileContent" class="tab-content active">
-        <h2>Профиль</h2>
-        <p>Здесь будет информация о вашем профиле.</p>
+    <div id="homeContent" class="tab-content active">
+        <h2>Главная</h2>
+        <p>Добро пожаловать в приложение!</p>
+    </div>
+    <div id="rankingContent" class="tab-content">
+        <h2>Рейтинг</h2>
+        <p>Здесь будет информация о вашем рейтинге.</p>
     </div>
     <div id="awardsContent" class="tab-content">
         <h2>Награды</h2>
         <p>Здесь будут отображаться ваши награды.</p>
     </div>
-    <div id="rankingContent" class="tab-content">
-        <h2>Рейтинг</h2>
-        <p>Здесь будет информация о вашем рейтинге.</p>
+    <div id="friendsContent" class="tab-content">
+        <h2>Друзья</h2>
+        <p>Добавляйте друзей и следите за их успехами.</p>
+    </div>
+    <div id="profileContent" class="tab-content">
+        <h2>Профиль</h2>
+        <p>Здесь будет информация о вашем профиле.</p>
     </div>
 
     <!-- Нижнее меню -->
@@ -158,36 +164,27 @@
     </div>
 
     <script>
-        // Инициализация Telegram Web App
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Получаем данные пользователя
+        // Приветствие
         const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
         document.getElementById('greeting').innerText = `Привет, ${user.first_name}!`;
 
-        // Установка фото пользователя в меню
+        // Фото пользователя
         const userPhotoElement = document.getElementById('userPhoto');
         if (user.photo_url) {
-            userPhotoElement.src = user.photo_url; // Фото пользователя
+            userPhotoElement.src = user.photo_url;
         }
 
-        // Логика для чек-инов
+        // Счетчик чек-инов
         const counterElement = document.getElementById('checkin-count');
-        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || { count: 0 };
+        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || { count: 0, lastCheckin: null };
         const today = new Date().toISOString().split('T')[0];
 
         function updateCounter() {
-            counterElement.style.opacity = 0;
-            setTimeout(() => {
-                counterElement.innerText = checkinData.count;
-                counterElement.style.opacity = 1;
-                counterElement.style.transform = "scale(1.1)";
-                setTimeout(() => counterElement.style.transform = "scale(1)", 200);
-            }, 200);
+            counterElement.innerText = checkinData.count;
         }
-
-        updateCounter();
 
         document.getElementById('checkin').onclick = () => {
             if (checkinData.lastCheckin !== today) {
@@ -201,11 +198,12 @@
             }
         };
 
-        // Логика для вкладок
+        updateCounter();
+
+        // Логика переключения вкладок
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            const tabContent = document.getElementById(`${tabName}Content`);
-            if (tabContent) tabContent.classList.add('active');
+            document.getElementById(`${tabName}Content`).classList.add('active');
         }
     </script>
 </body>
