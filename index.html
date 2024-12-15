@@ -92,10 +92,11 @@
             margin-bottom: 5px;
         }
         .menu-icon img {
-            width: 40px; /* Устанавливаем ширину изображения */
-            height: 40px; /* Устанавливаем высоту изображения */
-            border-radius: 50%; /* Делаем изображение круглым */
-            object-fit: cover; /* Масштабируем изображение, сохраняя пропорции */
+            width: 40px; /* Размер изображения */
+            height: 40px; /* Размер изображения */
+            border-radius: 50%; /* Круглая форма */
+            object-fit: cover; /* Масштабирование изображения */
+            filter: none; /* Убираем фильтр */
         }
         .menu-item:hover .menu-icon {
             background-color: #1C86EE;
@@ -151,14 +152,13 @@
         </div>
         <div class="menu-item" onclick="showTab('friends')">
             <div class="menu-icon">
-                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
+                <img src="https://img.icons8.com/ios-filled/50/three-users.png" alt="Друзья"> <!-- Замененная иконка -->
             </div>
             Друзья
         </div>
         <div class="menu-item" onclick="showTab('profile')">
             <div class="menu-icon">
-                <!-- Здесь будет отображаться фото профиля пользователя -->
-                <img id="profile-photo" src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
+                <img src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
             </div>
             Профиль
         </div>
@@ -168,15 +168,9 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Получаем информацию о пользователе из Telegram Web App
         const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
-        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! Каждый день без сигарет — это шаг к лучшему здоровью.`;
-
-        // Обновляем фото профиля, если оно есть
-        const profilePhoto = document.getElementById('profile-photo');
-        if (user.photo_url) {
-            profilePhoto.src = user.photo_url;
-        }
+        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
+        Каждый день без сигарет — это шаг к лучшему здоровью.`;
 
         const counterElement = document.getElementById('checkin-count');
         let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
