@@ -83,18 +83,18 @@
         .menu-icon {
             background-color: #1E90FF;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;  /* Уменьшаем размер круга */
+            height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 5px;
-            overflow: hidden; /* обрезка фото */
+            overflow: hidden;
         }
         .menu-icon img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Обеспечивает обрезку изображения */
             filter: brightness(0) invert(1);
         }
         .menu-item:hover .menu-icon {
@@ -151,7 +151,7 @@
         </div>
         <div class="menu-item" onclick="showTab('friends')">
             <div class="menu-icon">
-                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
+                <img src="https://img.icons8.com/ios-filled/50/three-users.png" alt="Друзья"> <!-- Новая иконка -->
             </div>
             Друзья
         </div>
