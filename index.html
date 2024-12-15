@@ -167,40 +167,15 @@
         tg.expand();
 
         const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
-        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
-        Каждый день без сигарет — это шаг к лучшему здоровью.`;
+        document.getElementById('greeting').innerText = `Привет, ${user.first_name}!`;
 
-        const counterElement = document.getElementById('checkin-count');
-        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
-        const userId = user.id || "default_user";
-        const today = new Date().toISOString().split('T')[0];
-
-        if (!checkinData[userId]) {
-            checkinData[userId] = { count: 0, lastCheckin: null };
+        // Фото пользователя в кнопке "Профиль"
+        const profileIcon = document.querySelector('.menu-item:last-child img');
+        if (user.photo_url) {
+            profileIcon.src = user.photo_url;
+            profileIcon.style.borderRadius = "50%"; // Круглая форма фото
+            profileIcon.style.objectFit = "cover";
         }
-        const userCheckin = checkinData[userId];
-
-        function updateCounter() {
-            counterElement.classList.remove('active');
-            setTimeout(() => {
-                counterElement.innerText = userCheckin.count;
-                counterElement.classList.add('active');
-            }, 200);
-        }
-        updateCounter();
-
-        document.getElementById('checkin').onclick = () => {
-            if (userCheckin.lastCheckin !== today) {
-                userCheckin.count++;
-                userCheckin.lastCheckin = today;
-                checkinData[userId] = userCheckin;
-                localStorage.setItem('checkinData', JSON.stringify(checkinData));
-                updateCounter();
-                alert("Чек-ин выполнен!");
-            } else {
-                alert("Вы уже сделали чек-ин сегодня.");
-            }
-        };
 
         // Функция переключения вкладок
         function showTab(tabName) {
