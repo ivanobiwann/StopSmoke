@@ -89,7 +89,7 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 5px;
-            overflow: hidden; /* обрезка фото по кругу */
+            overflow: hidden; /* обрезка фото */
         }
         .menu-icon img {
             width: 100%;
@@ -112,6 +112,22 @@
         <h2>Главная</h2>
         <p>Добро пожаловать! Следите за своим прогрессом каждый день.</p>
     </div>
+    <div id="rankingContent" class="tab-content">
+        <h2>Рейтинг</h2>
+        <p>Здесь будет информация о вашем рейтинге.</p>
+    </div>
+    <div id="rewardsContent" class="tab-content">
+        <h2>Награды</h2>
+        <p>Здесь будут отображаться ваши награды.</p>
+    </div>
+    <div id="friendsContent" class="tab-content">
+        <h2>Друзья</h2>
+        <p>Здесь можно увидеть ваших друзей.</p>
+    </div>
+    <div id="profileContent" class="tab-content">
+        <h2>Профиль</h2>
+        <p>Здесь будет информация о вашем профиле.</p>
+    </div>
 
     <!-- Нижнее меню -->
     <nav class="bottom-menu">
@@ -120,6 +136,24 @@
                 <img src="https://img.icons8.com/ios-filled/50/home.png" alt="Главная">
             </div>
             Главная
+        </div>
+        <div class="menu-item" onclick="showTab('ranking')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/trophy.png" alt="Рейтинг">
+            </div>
+            Рейтинг
+        </div>
+        <div class="menu-item" onclick="showTab('rewards')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/medal.png" alt="Награды">
+            </div>
+            Награды
+        </div>
+        <div class="menu-item" onclick="showTab('friends')">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
+            </div>
+            Друзья
         </div>
         <div class="menu-item" onclick="showTab('profile')">
             <div class="menu-icon">
@@ -133,7 +167,6 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Получение данных пользователя
         const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
         const greetingElement = document.getElementById('greeting');
         greetingElement.innerText = `Привет, ${user.first_name}! Каждый день без сигарет — это шаг к лучшему здоровью.`;
@@ -142,10 +175,9 @@
         const profilePhoto = document.getElementById('profile-photo');
         if (user.photo_url) {
             profilePhoto.src = user.photo_url;
-            profilePhoto.style.filter = "none"; // Отключаем белую заливку
+            profilePhoto.style.filter = "none";
         }
 
-        // Счетчик чек-инов
         const counterElement = document.getElementById('checkin-count');
         let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
         const userId = user.id || "default_user";
@@ -179,7 +211,6 @@
             }
         };
 
-        // Функция переключения вкладок
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(`${tabName}Content`).classList.add('active');
