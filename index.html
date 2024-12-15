@@ -92,14 +92,22 @@
             margin-bottom: 5px;
         }
         .menu-icon img {
-            width: 40px; /* Размер изображения */
+            width: 40px;  /* Размер изображения */
             height: 40px; /* Размер изображения */
             border-radius: 50%; /* Круглая форма */
             object-fit: cover; /* Масштабирование изображения */
-            filter: none; /* Убираем фильтр */
         }
         .menu-item:hover .menu-icon {
             background-color: #1C86EE;
+        }
+
+        /* Специальный стиль для иконки "Профиль" */
+        .menu-item.profile .menu-icon {
+            background-color: transparent; /* Прозрачный фон для кнопки "Профиль" */
+        }
+        .menu-item.profile .menu-icon img {
+            width: 45px;  /* Размер изображения в кнопке "Профиль" */
+            height: 45px; /* Размер изображения в кнопке "Профиль" */
         }
     </style>
 </head>
@@ -152,11 +160,12 @@
         </div>
         <div class="menu-item" onclick="showTab('friends')">
             <div class="menu-icon">
-                <img src="https://img.icons8.com/ios-filled/50/three-users.png" alt="Друзья"> <!-- Замененная иконка -->
+                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
             </div>
             Друзья
         </div>
-        <div class="menu-item" onclick="showTab('profile')">
+        <!-- Кнопка "Профиль" с отдельным стилем -->
+        <div class="menu-item profile" onclick="showTab('profile')">
             <div class="menu-icon">
                 <img src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
             </div>
