@@ -28,7 +28,7 @@
             height: 100px;
             background-color: #ccc;
             border-radius: 50%;
-            animation: moveClouds 10s infinite;
+            animation: bike-cloud 10s infinite;
         }
 
         .bike__cloud-2 {
@@ -56,6 +56,7 @@
             border-radius: 50%;
             background-color: #333;
             margin: 0 20px;
+            animation: rotateWheel 3s linear infinite;
         }
 
         .bike__man {
@@ -63,6 +64,7 @@
             bottom: 10%;
             left: 50%;
             transform: translateX(-50%);
+            animation: moveMan 10s linear infinite;
         }
 
         .bike__head {
@@ -71,6 +73,7 @@
             height: 40px;
             background-color: #7e2ea0;
             border-radius: 50%;
+            animation: bike-arm 1s ease-in-out infinite;
         }
 
         .bike__head .bike__eye {
@@ -90,30 +93,86 @@
             right: 10px;
         }
 
-        /* Анимации для движения облаков */
-        @keyframes moveClouds {
-            0% { left: -200px; }
-            100% { left: 100%; }
-        }
-
         @keyframes moveBike {
             0% { transform: translateX(-50%) translateY(0); }
             100% { transform: translateX(-50%) translateY(-20px); }
         }
 
-        /* Приветствие */
-        .greeting {
-            display: none;
+        @keyframes bike-arm {
+            0% { transform: rotate(0deg); }
+            5% { transform: rotate(-2deg); }
+            10% { transform: rotate(-5deg); }
+            15% { transform: rotate(-11deg); }
+            20% { transform: rotate(-14deg); }
+            25% { transform: rotate(-11deg); }
+            30% { transform: rotate(-9deg); }
+            35% { transform: rotate(-3deg); }
+            40% { transform: rotate(0deg); }
+            45% { transform: rotate(1deg); }
+            50% { transform: rotate(0deg); }
+            55% { transform: rotate(-2deg); }
+            60% { transform: rotate(-6deg); }
+            65% { transform: rotate(-12deg); }
+            70% { transform: rotate(-16deg); }
+            75% { transform: rotate(-14deg); }
+            80% { transform: rotate(-9deg); }
+            85% { transform: rotate(-3deg); }
+            90% { transform: rotate(0deg); }
+            95% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
         }
 
-        #greetingContent {
-            display: block;
-            text-align: center;
+        @keyframes bike-forearm {
+            0% { transform: rotate(139deg); }
+            5% { transform: rotate(136deg); }
+            10% { transform: rotate(126deg); }
+            15% { transform: rotate(124deg); }
+            20% { transform: rotate(119deg); }
+            25% { transform: rotate(109deg); }
+            30% { transform: rotate(109deg); }
+            35% { transform: rotate(113deg); }
+            40% { transform: rotate(124deg); }
+            45% { transform: rotate(133deg); }
+            50% { transform: rotate(139deg); }
+            55% { transform: rotate(139deg); }
+            60% { transform: rotate(133deg); }
+            65% { transform: rotate(130deg); }
+            70% { transform: rotate(126deg); }
+            75% { transform: rotate(121deg); }
+            80% { transform: rotate(120deg); }
+            85% { transform: rotate(123deg); }
+            90% { transform: rotate(131deg); }
+            95% { transform: rotate(140deg); }
+            100% { transform: rotate(139deg); }
         }
 
-        /* Скрытие анимации после 3 секунд */
-        .app-content {
-            display: none;
+        @keyframes bike-hand {
+            0% { transform: rotate(181deg); }
+            5% { transform: rotate(181deg); }
+            10% { transform: rotate(201deg); }
+            15% { transform: rotate(206deg); }
+            20% { transform: rotate(216deg); }
+            25% { transform: rotate(216deg); }
+            30% { transform: rotate(216deg); }
+            35% { transform: rotate(208deg); }
+            40% { transform: rotate(200deg); }
+            45% { transform: rotate(193deg); }
+            50% { transform: rotate(185deg); }
+            55% { transform: rotate(189deg); }
+            60% { transform: rotate(197deg); }
+            65% { transform: rotate(204deg); }
+            70% { transform: rotate(208deg); }
+            75% { transform: rotate(207deg); }
+            80% { transform: rotate(203deg); }
+            85% { transform: rotate(196deg); }
+            90% { transform: rotate(186deg); }
+            95% { transform: rotate(181deg); }
+            100% { transform: rotate(181deg); }
+        }
+
+        @keyframes bike-cloud {
+            0% { left: 800px; }
+            100% { left: -100px; }
         }
     </style>
 </head>
@@ -126,43 +185,13 @@
         <div class="bike__bike">
             <div class="bike__wheel"></div>
             <div class="bike__wheel"></div>
-            <div class="bike__down-tube"></div>
-            <div class="bike__tubes">
-                <div class="bike__chain"></div>
-                <div class="bike__seat-stays"></div>
-                <div class="bike__chain-stays"></div>
-                <div class="bike__seat-tube"></div>
-                <div class="bike__star">
-                    <div class="bike__pedal"></div>    
-                </div>
-                <div class="bike__seat"></div>    
-            </div>
-            <div class="bike__top-tube"></div>
-            <div class="bike__fo"></div>
-            <div class="bike__head-tube"></div>
-            <div class="bike__helm"></div>
-            <div class="bike__lock"></div>    
         </div>
         <div class="bike__man">
             <div class="bike__head">
                 <div class="bike__eye"></div>
                 <div class="bike__eye"></div>
-                <div class="bike__whisker"></div>
-                <div class="bike__nose"></div>
-                <div class="bike__month"></div>
-                <div class="bike__whisker"></div>
-                <div class="bike__cap">
-                    <div class="bike__peak">
-                        <div class="bike__peak-parts"></div>   
-                    </div>    
-                </div>
             </div>
-        </div>    
-    </div>
-
-    <!-- Основной контент приложения (будет показан после анимации) -->
-    <div class="app-content">
-        <!-- Ваш основной контент приложения здесь -->
+        </div>
     </div>
 
     <script>
