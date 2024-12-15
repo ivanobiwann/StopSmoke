@@ -191,6 +191,8 @@
         // Устанавливаем фото профиля
         if (user.photo_url) {
             document.getElementById('profile-pic').src = user.photo_url;  // Устанавливаем фото пользователя
+        } else {
+            console.log("Фото профиля не найдено"); // Если фото нет, выводим в консоль
         }
 
         const counterElement = document.getElementById('checkin-count');
