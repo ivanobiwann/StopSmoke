@@ -110,6 +110,12 @@
             border-radius: 50%; /* Круглая форма для изображения */
             object-fit: cover; /* Обрезка изображения для соответствия круглой форме */
         }
+
+        /* Иконка "Друзья" - правильная иконка с двумя человечками */
+        .menu-item.friends .menu-icon img {
+            width: 30px;
+            height: 30px;
+        }
     </style>
 </head>
 <body>
@@ -159,9 +165,9 @@
             </div>
             Награды
         </div>
-        <div class="menu-item" onclick="showTab('friends')">
+        <div class="menu-item friends" onclick="showTab('friends')">
             <div class="menu-icon">
-                <img src="https://img.icons8.com/ios-filled/50/user-group.png" alt="Друзья"> <!-- Замена на иконку с двумя человечками -->
+                <img src="https://img.icons8.com/ios-filled/50/user-group.png" alt="Друзья">
             </div>
             Друзья
         </div>
