@@ -178,7 +178,7 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        const user = tg.initDataUnsafe?.user || { first_name: "Пользователь", photo_url: "" }; // Проверим наличие photo_url
+        const user = tg.initDataUnsafe?.user || { first_name: "Пользователь", photo_url: "" }; // Проверяем наличие photo_url
         document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
         Каждый день без сигарет — это шаг к лучшему здоровью.`;
 
