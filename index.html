@@ -9,20 +9,19 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #1E1E1E;
-            color: white;
-            height: 100vh;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1E1E1E;
+            color: white;
         }
-
         h1 {
             color: #1E90FF;
         }
-
         button {
             background-color: #1E90FF;
             color: white;
@@ -33,11 +32,9 @@
             border-radius: 10px;
             margin-bottom: 20px;
         }
-
         button:hover {
             background-color: #1C86EE;
         }
-
         .counter {
             width: 100px;
             height: 100px;
@@ -47,58 +44,60 @@
             color: white;
             font-size: 40px;
             font-weight: bold;
-            margin: 30px auto;
+            margin-top: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
-
+        .counter.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .tab-content {
+            display: none;
+            width: 100%;
+            text-align: center;
+            color: white;
+        }
+        .tab-content.active {
+            display: block;
+        }
         /* Нижнее меню */
         .bottom-menu {
             display: flex;
             justify-content: space-around;
-            background-color: #252525;
+            align-items: center;
+            background-color: #2E2E2E;
             padding: 10px 0;
-            border-top: 1px solid #444;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
         }
-
         .menu-item {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
             color: white;
             font-size: 12px;
-            cursor: pointer;
         }
-
         .menu-icon {
+            background-color: #1E90FF;
+            border-radius: 50%;
             width: 50px;
             height: 50px;
-            margin: 0 auto 5px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #1E90FF;
-            border-radius: 50%;
+            margin-bottom: 5px;
         }
-
         .menu-icon img {
-            width: 30px;
-            height: 30px;
-            object-fit: contain;
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1);
         }
-
-        /* Фото пользователя */
-        .user-icon img {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-        }
-
-        /* Вкладки */
-        .tab-content {
-            display: none;
-            padding: 20px;
-        }
-
-        .tab-content.active {
-            display: block;
+        .menu-item:hover .menu-icon {
+            background-color: #1C86EE;
         }
     </style>
 </head>
@@ -107,22 +106,22 @@
     <button id="checkin">Сделать чек-ин</button>
     <div id="checkin-count" class="counter">0</div>
 
-    <!-- Контейнер вкладок -->
+    <!-- Контент вкладок -->
     <div id="homeContent" class="tab-content active">
         <h2>Главная</h2>
-        <p>Добро пожаловать в приложение!</p>
+        <p>Добро пожаловать! Следите за своим прогрессом каждый день.</p>
     </div>
     <div id="rankingContent" class="tab-content">
         <h2>Рейтинг</h2>
         <p>Здесь будет информация о вашем рейтинге.</p>
     </div>
-    <div id="awardsContent" class="tab-content">
+    <div id="rewardsContent" class="tab-content">
         <h2>Награды</h2>
         <p>Здесь будут отображаться ваши награды.</p>
     </div>
     <div id="friendsContent" class="tab-content">
         <h2>Друзья</h2>
-        <p>Добавляйте друзей и следите за их успехами.</p>
+        <p>Здесь можно увидеть ваших друзей.</p>
     </div>
     <div id="profileContent" class="tab-content">
         <h2>Профиль</h2>
@@ -130,7 +129,7 @@
     </div>
 
     <!-- Нижнее меню -->
-    <div class="bottom-menu">
+    <nav class="bottom-menu">
         <div class="menu-item" onclick="showTab('home')">
             <div class="menu-icon">
                 <img src="https://img.icons8.com/ios-filled/50/home.png" alt="Главная">
@@ -143,7 +142,7 @@
             </div>
             Рейтинг
         </div>
-        <div class="menu-item" onclick="showTab('awards')">
+        <div class="menu-item" onclick="showTab('rewards')">
             <div class="menu-icon">
                 <img src="https://img.icons8.com/ios-filled/50/medal.png" alt="Награды">
             </div>
@@ -151,45 +150,50 @@
         </div>
         <div class="menu-item" onclick="showTab('friends')">
             <div class="menu-icon">
-                <img src="https://img.icons8.com/ios-filled/50/user-groups.png" alt="Друзья">
+                <img src="https://img.icons8.com/ios-filled/50/group.png" alt="Друзья">
             </div>
             Друзья
         </div>
         <div class="menu-item" onclick="showTab('profile')">
-            <div class="menu-icon user-icon">
-                <img id="userPhoto" src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
+            <div class="menu-icon">
+                <img src="https://img.icons8.com/ios-filled/50/user.png" alt="Профиль">
             </div>
             Профиль
         </div>
-    </div>
+    </nav>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Приветствие
         const user = tg.initDataUnsafe?.user || { first_name: "Пользователь" };
-        document.getElementById('greeting').innerText = `Привет, ${user.first_name}!`;
+        document.getElementById('greeting').innerText = `Привет, ${user.first_name}! 
+        Каждый день без сигарет — это шаг к лучшему здоровью.`;
 
-        // Фото пользователя
-        const userPhotoElement = document.getElementById('userPhoto');
-        if (user.photo_url) {
-            userPhotoElement.src = user.photo_url;
-        }
-
-        // Счетчик чек-инов
         const counterElement = document.getElementById('checkin-count');
-        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || { count: 0, lastCheckin: null };
+        let checkinData = JSON.parse(localStorage.getItem('checkinData')) || {};
+        const userId = user.id || "default_user";
         const today = new Date().toISOString().split('T')[0];
 
-        function updateCounter() {
-            counterElement.innerText = checkinData.count;
+        if (!checkinData[userId]) {
+            checkinData[userId] = { count: 0, lastCheckin: null };
         }
+        const userCheckin = checkinData[userId];
+
+        function updateCounter() {
+            counterElement.classList.remove('active');
+            setTimeout(() => {
+                counterElement.innerText = userCheckin.count;
+                counterElement.classList.add('active');
+            }, 200);
+        }
+        updateCounter();
 
         document.getElementById('checkin').onclick = () => {
-            if (checkinData.lastCheckin !== today) {
-                checkinData.count++;
-                checkinData.lastCheckin = today;
+            if (userCheckin.lastCheckin !== today) {
+                userCheckin.count++;
+                userCheckin.lastCheckin = today;
+                checkinData[userId] = userCheckin;
                 localStorage.setItem('checkinData', JSON.stringify(checkinData));
                 updateCounter();
                 alert("Чек-ин выполнен!");
@@ -198,9 +202,7 @@
             }
         };
 
-        updateCounter();
-
-        // Логика переключения вкладок
+        // Функция переключения вкладок
         function showTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(`${tabName}Content`).classList.add('active');
